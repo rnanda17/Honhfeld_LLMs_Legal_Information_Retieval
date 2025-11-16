@@ -162,10 +162,14 @@ with top_right:
     if hasattr(pipeline, "MODEL_NAME"):
         pipeline.MODEL_NAME = selected_model_id
 
-    key_set = bool(os.getenv("OPENROUTER_API_KEY"))
+    
+    key_set = bool(os.getenv("OPENROUTER_API_KEY") or st.secrets.get("OPENROUTER_API_KEY"))
     st.caption(
-        f"OpenRouter key: {'✅ detected' if key_set else '❌ not set in environment'}"
-    )
+    f"OpenRouter key: {'✅ detected' if key_set else '❌ not set (env or secrets)'}"
+)
+
+
+
 
     run_button = st.button("🔍 Run LLM retrieval for this question", type="primary")
 

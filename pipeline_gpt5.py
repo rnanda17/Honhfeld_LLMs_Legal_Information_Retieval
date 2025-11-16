@@ -9,15 +9,25 @@ from typing import List, Dict
 from sklearn.metrics import ndcg_score, average_precision_score
 from nltk.metrics.scores import precision as nltk_precision, recall as nltk_recall, f_measure as nltk_f1
 from sklearn.metrics import confusion_matrix
+import streamlit as st
 
 #open router key
 #os.environ["OPENROUTER_API_KEY"] = "set your key"
 
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY") or st.secrets.get("OPENROUTER_API_KEY")
+
+if not OPENROUTER_API_KEY:
+    raise RuntimeError(
+        "OPENROUTER_API_KEY is not set. "
+        "Set it as an environment variable locally or in Streamlit secrets when deployed."
+    )
+
 # --- Client (OpenAI-compatible) ---
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ["OPENROUTER_API_KEY"],
+    api_key=OPENROUTER_API_KEY,
 )
+
 
 MODEL_NAME = "openai/gpt-5"
 
